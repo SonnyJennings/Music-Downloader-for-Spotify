@@ -50,22 +50,22 @@ def download_audio(yt_url, destination='.'):
 
 
 # Function to retrieve the user's liked tracks from Spotify
-def get_liked_tracks(limit=5):
+def get_liked_tracks():
     liked_tracks = []
 
     # Request the current user's saved tracks from Spotify
-    results = spotify.current_user_saved_tracks(limit=limit)
+    results = spotify.current_user_saved_tracks()
 
-    # Continue to fetch tracks until the limit is reached
-    while results and len(liked_tracks) < limit:
+    # Continue to fetch tracks
+    while results:
         liked_tracks.extend(item['track'] for item in results['items'])
-        if results['next'] and len(liked_tracks) < limit:
+        if results['next']:
             results = spotify.next(results)
         else:
             break
 
-    # Return the list of liked tracks, limited to the specified number
-    return liked_tracks[:limit]
+    # Return the list of liked tracks
+    return liked_tracks
 
 
 # Main logic to process each liked track
